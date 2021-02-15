@@ -1,3 +1,7 @@
+//Vist these sites
+// https://levelup.gitconnected.com/all-possible-ways-of-making-an-api-call-in-plain-javascript-c0dee3c11b8b
+// https://jsonplaceholder.typicode.com/
+
 let webSite = 'https://api.openweathermap.org/data/2.5/weather?zip=';
 let apiKey = '9a4b23ee1a12ffef7d38abce98c146dc';
 
@@ -16,17 +20,7 @@ function handleSubmit(event) {
         //checkForName(formText)
     Client.checkForName(formText)
 
-    console.log("Date: " + newDate);
-    getTemp(webSite, postZipcode, apiKey)
-        .then(function(data) {
-            console.log("Chuck temperature: ", data.main.temp)
-            postData('http://localhost:8080/addWeatherData', { temperature: data.main.temp, date: newDate })
-                //Update the website user interface
-                .then(function() {
-                    refreshUI()
-                })
-        })
-
+   getUsers().then(data => console.log(data));
 
     console.log("::: Form Submitted :::")
     fetch('http://localhost:8081/test')
@@ -36,36 +30,9 @@ function handleSubmit(event) {
         })
 }
 
-//Aysnc GET with website
-const getTemp = async(webSite, code, apiKey) => {
-    const webRes = await fetch(webSite + code + ',US' + '&APPID=' + apiKey)
-    console.log(webRes);
-    try {
-        const data = await webRes.json();
-        console.log(data);
-
-        return data;
-    } catch (error) {
-        console.log('error', error);
-    }
+async function getUsers() {
+    let response = await fetch('https://jsonplaceholder.typicode.com/users');
+    let data = await response.json()
+    return data;
 }
 
-//Async to POST
-const postData = async(url = '', data = {}) => {
-    const postRequest = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
-    try {
-
-        const newData = await postRequest.json();
-
-        return newData;
-    } catch (error) {
-        console.log('POST Error:', error);
-    }
-}
