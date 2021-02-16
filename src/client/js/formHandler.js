@@ -2,6 +2,8 @@
 // https://levelup.gitconnected.com/all-possible-ways-of-making-an-api-call-in-plain-javascript-c0dee3c11b8b
 // https://jsonplaceholder.typicode.com/
 
+const { response } = require("express");
+
 let webSite = 'https://api.openweathermap.org/data/2.5/weather?zip=';
 let apiKey = '9a4b23ee1a12ffef7d38abce98c146dc';
 
@@ -20,14 +22,18 @@ function handleSubmit(event) {
         //checkForName(formText)
     Client.checkForName(formText)
 
-   getUsers().then(data => console.log(data));
+    // getUsers().then(data => console.log(data));
 
     console.log("::: Form Submitted :::")
-    fetch('http://localhost:8081/test')
+    fetch('https://jsonplaceholder.typicode.com/users')
         .then(dres => res.json())
         .then(function(res) {
+            console.log(users)
             document.getElementById('results').innerHTML = res.message
         })
+
+
+
 }
 
 async function getUsers() {
@@ -35,4 +41,3 @@ async function getUsers() {
     let data = await response.json()
     return data;
 }
-
